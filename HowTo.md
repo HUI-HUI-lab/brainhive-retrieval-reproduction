@@ -36,6 +36,9 @@ python reproduction/scripts/download_subset.py \
   --subjects 1
 ```
 
+If the EEG files already exist in a trusted shared cache, link or copy them into the
+documented directory layout and add `--skip-eeg` to fetch only the visual embeddings.
+
 The EEG files are trusted research artifacts serialized with PyTorch/pickle. Do not load similarly formatted files from an untrusted source.
 
 Validate the file shapes and image-ID alignment before using a GPU:

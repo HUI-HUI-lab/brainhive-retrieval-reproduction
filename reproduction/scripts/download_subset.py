@@ -20,7 +20,12 @@ def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--data-root", type=Path, required=True)
     parser.add_argument("--subjects", type=parse_subjects, default=parse_subjects("1"))
+    parser.add_argument("--skip-eeg", action="store_true")
+    parser.add_argument("--skip-embeddings", action="store_true")
     args = parser.parse_args()
+
+    if args.skip_eeg and args.skip_embeddings:
+        parser.error("--skip-eeg and --skip-embeddings cannot be used together")
 
     root = args.data_root.expanduser().resolve()
     eeg_root = root / "things-eeg"
@@ -31,24 +36,26 @@ def main() -> None:
         for subject in args.subjects
         for split in ("train", "test")
     ]
-    snapshot_download(
-        repo_id="Haitao999/things-eeg",
-        repo_type="dataset",
-        allow_patterns=eeg_patterns,
-        local_dir=eeg_root,
-    )
+    if not args.skip_eeg:
+        snapshot_download(
+            repo_id="Haitao999/things-eeg",
+            repo_type="dataset",
+            allow_patterns=eeg_patterns,
+            local_dir=eeg_root,
+        )
 
     embedding_patterns = [
         f"things-eeg/things_{split}_{model}-*.parquet"
         for split in ("train", "test")
         for model in ("CLIP-ViT-B-32-laion2B-s34B-b79K", "vae")
     ]
-    snapshot_download(
-        repo_id="fakekungfu/Brain-HIVE_Visual_Embeddings",
-        repo_type="dataset",
-        allow_patterns=embedding_patterns,
-        local_dir=embedding_root,
-    )
+    if not args.skip_embeddings:
+        snapshot_download(
+            repo_id="fakekungfu/Brain-HIVE_Visual_Embeddings",
+            repo_type="dataset",
+            allow_patterns=embedding_patterns,
+            local_dir=embedding_root,
+        )
 
     print(f"EEG directory: {eeg_root / 'Preprocessed_data_250Hz_whiten'}")
     print(f"Embedding directory: {embedding_root / 'things-eeg'}")
@@ -56,4 +63,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-
