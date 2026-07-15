@@ -7,3 +7,13 @@ __pycache__/
 logs/
 *.resolved*.yaml
 swanlog/
+
+# Reproduction-only local artifacts
+Brain-HIVE-main/
+Brain-HIVE-main.zip
+tmp/
+data/
+results/
+checkpoints/
+*.log
+.env

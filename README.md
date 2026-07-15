@@ -1,5 +1,10 @@
 # BrainHiVE: Learning Brain Representation with Hierarchical Visual Embeddings
 
+> **Mini Assignment #2 reproduction:** This fork adds a focused reproduction of the
+> THINGS-EEG intra-subject 200-way retrieval ablation (`B32` versus `B32 + VAE`).
+> See [HowTo.md](HowTo.md) and the scripts under `reproduction/`. The reconstruction
+> and diffusion-prior stages are outside the reproduction scope.
+
 BrainHIVE is a brain–vision decoding project for brain-to-image retrieval and reconstruction.
 
 We align EEG/MEG embeddings to a single fused visual token built from multiple pretrained visual encoders that cover both high-level semantics (e.g., CLIP) and low-level visual details (e.g., VAE latents). Alignment is trained with a simple contrastive objective.
