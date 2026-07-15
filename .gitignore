@@ -14,6 +14,7 @@ Brain-HIVE-main.zip
 tmp/
 /data/
 /results/
+/output/
 checkpoints/
 *.log
 .env

@@ -5,6 +5,11 @@
 > See [HowTo.md](HowTo.md) and the scripts under `reproduction/`. The reconstruction
 > and diffusion-prior stages are outside the reproduction scope.
 
+The completed 10-subject reproduction obtained 21.6%/53.1% Top-1/Top-5 for B32
+and 50.2%/82.6% for B32+VAE. The +28.6/+29.5 percentage-point improvement supports
+the paper's directional conclusion, although the absolute scores are lower. Compact
+results and run metadata are under [`report/data`](report/data/).
+
 BrainHIVE is a brain–vision decoding project for brain-to-image retrieval and reconstruction.
 
 We align EEG/MEG embeddings to a single fused visual token built from multiple pretrained visual encoders that cover both high-level semantics (e.g., CLIP) and low-level visual details (e.g., VAE latents). Alignment is trained with a simple contrastive objective.

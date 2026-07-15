@@ -1,0 +1,5 @@
+source,setting,top1_percent,top5_percent
+paper,B32,52.2,83.3
+paper,B32+VAE,73.6,94.3
+reproduction,B32,21.6,53.05
+reproduction,B32+VAE,50.2,82.55
