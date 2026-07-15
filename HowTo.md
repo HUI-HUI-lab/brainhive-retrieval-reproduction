@@ -19,6 +19,13 @@ pip install -r reproduction/requirements.txt
 
 The exact PyTorch index must be adjusted to the server's supported CUDA version.
 
+On the group server, create the isolated environment on `/data0` with:
+
+```bash
+bash reproduction/scripts/setup_server_env.sh \
+  /data0/yuhui/brainhive-retrieval/envs/brainhive-retrieval
+```
+
 ## Data preparation
 
 Download only the selected EEG subjects and the authors' cached B32/VAE embeddings:
