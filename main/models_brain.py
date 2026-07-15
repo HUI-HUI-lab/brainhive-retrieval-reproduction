@@ -1,4 +1,4 @@
-from typing import Union, List, Tuple
+from typing import Union, List, Optional, Tuple
 
 import torch
 import torch.nn as nn
@@ -298,8 +298,14 @@ class BrainEncoder(nn.Module):
         else:
             raise ValueError(f"Invalid brain backbone: {backbone}")
 
-    def forward(self, brain_signals: torch.Tensor, subject_ids: torch.Tensor):
+    def forward(
+        self,
+        brain_signals: torch.Tensor,
+        subject_ids: Optional[torch.Tensor] = None,
+    ):
         additional_kwargs = {}
         if isinstance(self.backbone, ATM):
+            if subject_ids is None:
+                raise ValueError("subject_ids are required for the ATM backbone")
             additional_kwargs.update({"subject_ids": subject_ids})
         return self.backbone(brain_signals, **additional_kwargs)
