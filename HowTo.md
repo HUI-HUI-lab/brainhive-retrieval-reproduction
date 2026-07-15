@@ -38,6 +38,15 @@ python reproduction/scripts/download_subset.py \
 
 The EEG files are trusted research artifacts serialized with PyTorch/pickle. Do not load similarly formatted files from an untrusted source.
 
+Validate the file shapes and image-ID alignment before using a GPU:
+
+```bash
+python reproduction/scripts/validate_data.py \
+  --data-root /data0/yuhui/brainhive-retrieval/data \
+  --subjects 1 \
+  --output /data0/yuhui/brainhive-retrieval/results/data-validation-sub01.json
+```
+
 ## Smoke test
 
 ```bash
