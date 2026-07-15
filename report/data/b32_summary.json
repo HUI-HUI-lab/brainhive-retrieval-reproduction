@@ -1,0 +1,16 @@
+{
+  "metrics": [
+    "eval_top1_acc",
+    "eval_top5_acc"
+  ],
+  "per_subject_mean": {
+    "1": {
+      "eval_top1_acc": 0.19,
+      "eval_top5_acc": 0.57
+    }
+  },
+  "overall_mean": {
+    "eval_top1_acc": 0.19,
+    "eval_top5_acc": 0.57
+  }
+}

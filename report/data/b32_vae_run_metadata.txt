@@ -1,0 +1,17 @@
+started_at=2026-07-16T01:15:57+08:00
+hostname=siielab-Z890-AORUS-MASTER
+git_commit=18d362c1d0b8a8fc76003c5b6dec7a33f8825bb7
+subject=1
+setting=b32_vae
+seed=2025
+train_batch_size=1024
+precision=bf16
+cuda_visible_devices=1
+Python 3.12.13
+torch=2.9.1+cu130
+transformers=4.57.3
+0, NVIDIA GeForce RTX 5090, 32607 MiB, 580.159.03
+1, NVIDIA GeForce RTX 5090, 32607 MiB, 580.159.03
+finished_at=2026-07-16T01:17:30+08:00
+runtime_seconds=93
+exit_status=0

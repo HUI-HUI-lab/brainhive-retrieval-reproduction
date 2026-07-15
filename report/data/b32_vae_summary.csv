@@ -1,0 +1,3 @@
+subject,eval_top1_acc,eval_top5_acc
+1,0.47,0.81
+MEAN,0.47,0.81

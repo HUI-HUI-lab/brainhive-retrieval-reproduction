@@ -1,0 +1,44 @@
+{
+  "data_root": "/data0/yuhui/brainhive-retrieval/data",
+  "subjects": [
+    1
+  ],
+  "models": [
+    "CLIP-ViT-B-32-laion2B-s34B-b79K",
+    "vae"
+  ],
+  "splits": {
+    "train": {
+      "examples": 16540,
+      "eeg_shape": [
+        17,
+        250
+      ],
+      "embedding_dims": {
+        "CLIP-ViT-B-32-laion2B-s34B-b79K": 512,
+        "vae": 1024
+      },
+      "first_image_id": "aardvark_01b",
+      "last_image_id": "zucchini_10s",
+      "subject_ids": [
+        1
+      ]
+    },
+    "test": {
+      "examples": 200,
+      "eeg_shape": [
+        17,
+        250
+      ],
+      "embedding_dims": {
+        "CLIP-ViT-B-32-laion2B-s34B-b79K": 512,
+        "vae": 1024
+      },
+      "first_image_id": "aircraft_carrier_06s",
+      "last_image_id": "wok_12s",
+      "subject_ids": [
+        1
+      ]
+    }
+  }
+}

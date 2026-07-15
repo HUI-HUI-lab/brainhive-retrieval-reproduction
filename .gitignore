@@ -12,8 +12,8 @@ swanlog/
 Brain-HIVE-main/
 Brain-HIVE-main.zip
 tmp/
-data/
-results/
+/data/
+/results/
 checkpoints/
 *.log
 .env
