@@ -43,7 +43,22 @@ fi
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 RUN_DIR="${OUTPUT_ROOT}/${SETTING}/subj-${SUBJECT}/rep-01"
 RESOLVED_CONFIG="${RUN_DIR}/resolved_config.yaml"
+METADATA_FILE="${RUN_DIR}/run_metadata.txt"
 mkdir -p "$RUN_DIR"
+
+START_EPOCH="$(date +%s)"
+finalize_run() {
+  status=$?
+  trap - EXIT
+  end_epoch="$(date +%s)"
+  {
+    echo "finished_at=$(date --iso-8601=seconds)"
+    echo "runtime_seconds=$((end_epoch - START_EPOCH))"
+    echo "exit_status=${status}"
+  } | tee -a "$METADATA_FILE"
+  exit "$status"
+}
+trap finalize_run EXIT
 
 python3 "${REPO_ROOT}/build_config.py" \
   --config_file "${REPO_ROOT}/reproduction/configs/retrieval.yaml" \
@@ -70,10 +85,11 @@ python3 "${REPO_ROOT}/build_config.py" \
   echo "seed=${SEED}"
   echo "train_batch_size=${TRAIN_BATCH_SIZE}"
   echo "precision=${PRECISION}"
-  nvidia-smi --query-gpu=name,memory.total,driver_version --format=csv,noheader
-} | tee "${RUN_DIR}/run_metadata.txt"
+  echo "cuda_visible_devices=${CUDA_VISIBLE_DEVICES:-all}"
+  python3 --version
+  python3 -c 'import torch, transformers; print(f"torch={torch.__version__}"); print(f"transformers={transformers.__version__}")'
+  nvidia-smi --query-gpu=index,name,memory.total,driver_version --format=csv,noheader
+} | tee "$METADATA_FILE"
 
 cd "$REPO_ROOT"
 python3 train_clip.py "$RESOLVED_CONFIG" 2>&1 | tee "${RUN_DIR}/train.log"
-echo "finished_at=$(date --iso-8601=seconds)" | tee -a "${RUN_DIR}/run_metadata.txt"
-
