@@ -6,6 +6,8 @@ PYTHON_VERSION="${PYTHON_VERSION:-3.12}"
 TORCH_INDEX_URL="${TORCH_INDEX_URL:-https://download.pytorch.org/whl/cu130}"
 TORCH_VERSION="${TORCH_VERSION:-2.9.1}"
 TORCHVISION_VERSION="${TORCHVISION_VERSION:-0.24.1}"
+export PIP_DEFAULT_TIMEOUT="${PIP_DEFAULT_TIMEOUT:-120}"
+export PIP_RETRIES="${PIP_RETRIES:-10}"
 
 CONDA_BASE="$(conda info --base)"
 source "${CONDA_BASE}/etc/profile.d/conda.sh"
@@ -38,4 +40,3 @@ print("datasets", datasets.__version__)
 if not torch.cuda.is_available():
     raise SystemExit("CUDA is not available in the reproduction environment")
 PY
-
