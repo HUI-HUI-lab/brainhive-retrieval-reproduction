@@ -63,14 +63,10 @@ NUM_EPOCHS=1 TRAIN_BATCH_SIZE=1024 \
 ## Formal experiment
 
 ```bash
-for subject in 1 2 3 4 5 6 7 8 9 10; do
-  for setting in b32 b32_vae; do
-    bash reproduction/scripts/run_retrieval.sh \
-      "$HOME/project/brainhive-data" \
-      "$HOME/project/brainhive-results" \
-      "$subject" "$setting" 2025
-  done
-done
+bash reproduction/scripts/run_matrix.sh \
+  "$HOME/project/brainhive-data" \
+  "$HOME/project/brainhive-results" \
+  1,2,3,4,5,6,7,8,9,10 2025
 ```
 
 Keep `per_device_eval_batch_size=200`: the provided metric implementation expects all 200 candidates in one similarity matrix. If training batch 1024 does not fit, reduce `TRAIN_BATCH_SIZE`; record that modification because gradient accumulation does not restore the same number of in-batch negatives.
