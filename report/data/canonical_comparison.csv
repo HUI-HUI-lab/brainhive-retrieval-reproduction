@@ -1,0 +1,7 @@
+setting,source,top1_percent,top5_percent
+B32,Paper Table 7,51.2,83.0
+B32,Collapsed HF cache reproduction,21.6,53.05
+B32,Canonical cache reproduction,48.8,81.0
+B32+VAE,Paper Table 7,73.7,94.1
+B32+VAE,Collapsed HF cache reproduction,50.2,82.55
+B32+VAE,Canonical cache reproduction,69.7,92.95

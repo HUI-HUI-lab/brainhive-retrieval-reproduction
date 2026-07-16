@@ -1,5 +1,5 @@
 started_at=2026-07-16T01:15:57+08:00
-hostname=siielab-Z890-AORUS-MASTER
+hostname=shared-research-server
 git_commit=18d362c1d0b8a8fc76003c5b6dec7a33f8825bb7
 subject=1
 setting=b32_vae

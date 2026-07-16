@@ -1,5 +1,5 @@
 {
-  "data_root": "/data0/yuhui/brainhive-retrieval/data",
+  "data_root": "<DATA_ROOT>",
   "subjects": [
     1
   ],

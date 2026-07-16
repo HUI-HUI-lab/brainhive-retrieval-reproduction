@@ -1,5 +1,10 @@
 #!/usr/bin/env python3
-"""Download only selected THINGS-EEG subjects and cached B32/VAE embeddings."""
+"""Download selected THINGS-EEG subjects and visual-embedding artifacts.
+
+The public B32 cache is excluded by default because the snapshot inspected for this
+reproduction was severely collapsed. Regenerate B32 from the canonical LAION model,
+or opt in explicitly and validate it before training.
+"""
 
 from __future__ import annotations
 
@@ -22,6 +27,11 @@ def main() -> None:
     parser.add_argument("--subjects", type=parse_subjects, default=parse_subjects("1"))
     parser.add_argument("--skip-eeg", action="store_true")
     parser.add_argument("--skip-embeddings", action="store_true")
+    parser.add_argument(
+        "--include-unverified-b32",
+        action="store_true",
+        help="also download the public B32 cache; validate it before training",
+    )
     args = parser.parse_args()
 
     if args.skip_eeg and args.skip_embeddings:
@@ -44,10 +54,14 @@ def main() -> None:
             local_dir=eeg_root,
         )
 
+    models = ["vae"]
+    if args.include_unverified_b32:
+        models.insert(0, "CLIP-ViT-B-32-laion2B-s34B-b79K")
+
     embedding_patterns = [
         f"things-eeg/things_{split}_{model}-*.parquet"
         for split in ("train", "test")
-        for model in ("CLIP-ViT-B-32-laion2B-s34B-b79K", "vae")
+        for model in models
     ]
     if not args.skip_embeddings:
         snapshot_download(
@@ -59,6 +73,13 @@ def main() -> None:
 
     print(f"EEG directory: {eeg_root / 'Preprocessed_data_250Hz_whiten'}")
     print(f"Embedding directory: {embedding_root / 'things-eeg'}")
+    if args.include_unverified_b32:
+        print(
+            "WARNING: the downloaded B32 cache is unverified. Run "
+            "reproduction/scripts/validate_embeddings.py before training."
+        )
+    elif not args.skip_embeddings:
+        print("Downloaded VAE only. Regenerate canonical B32 before the experiment.")
 
 
 if __name__ == "__main__":

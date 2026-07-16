@@ -1,4 +1,15 @@
+*.pdf binary
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.parquet binary
+*.pt binary
+*.safetensors binary
+
 *.sh text eol=lf
 *.py text eol=lf
-*.yaml text eol=lf
-*.yml text eol=lf
+*.md text
+*.csv text
+*.json text
+*.yaml text
+*.yml text

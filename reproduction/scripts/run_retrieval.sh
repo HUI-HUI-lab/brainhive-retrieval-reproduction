@@ -15,6 +15,8 @@ SEED="${5:-2025}"
 TRAIN_BATCH_SIZE="${TRAIN_BATCH_SIZE:-1024}"
 PRECISION="${PRECISION:-bf16}"
 NUM_EPOCHS="${NUM_EPOCHS:-25}"
+USE_CPU="${USE_CPU:-false}"
+PYTHON_BIN="${PYTHON_BIN:-python3}"
 
 case "$SETTING" in
   b32)
@@ -35,9 +37,22 @@ if [[ "$PRECISION" == "bf16" ]]; then
 elif [[ "$PRECISION" == "fp16" ]]; then
   BF16=false
   FP16=true
+elif [[ "$PRECISION" == "fp32" ]]; then
+  BF16=false
+  FP16=false
 else
-  echo "PRECISION must be bf16 or fp16" >&2
+  echo "PRECISION must be bf16, fp16, or fp32" >&2
   exit 2
+fi
+
+if [[ "$USE_CPU" != "true" && "$USE_CPU" != "false" ]]; then
+  echo "USE_CPU must be true or false" >&2
+  exit 2
+fi
+if [[ "$USE_CPU" == "true" ]]; then
+  TF32=false
+else
+  TF32=true
 fi
 
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
@@ -60,7 +75,7 @@ finalize_run() {
 }
 trap finalize_run EXIT
 
-python3 "${REPO_ROOT}/build_config.py" \
+"$PYTHON_BIN" "${REPO_ROOT}/build_config.py" \
   --config_file "${REPO_ROOT}/reproduction/configs/retrieval.yaml" \
   --output_file "$RESOLVED_CONFIG" \
   "subject_ids=[${SUBJECT}]" \
@@ -74,7 +89,9 @@ python3 "${REPO_ROOT}/build_config.py" \
   "per_device_train_batch_size=${TRAIN_BATCH_SIZE}" \
   "num_train_epochs=${NUM_EPOCHS}" \
   "bf16=${BF16}" \
-  "fp16=${FP16}"
+  "fp16=${FP16}" \
+  "tf32=${TF32}" \
+  "use_cpu=${USE_CPU}"
 
 {
   echo "started_at=$(date --iso-8601=seconds)"
@@ -85,11 +102,14 @@ python3 "${REPO_ROOT}/build_config.py" \
   echo "seed=${SEED}"
   echo "train_batch_size=${TRAIN_BATCH_SIZE}"
   echo "precision=${PRECISION}"
+  echo "use_cpu=${USE_CPU}"
   echo "cuda_visible_devices=${CUDA_VISIBLE_DEVICES:-all}"
-  python3 --version
-  python3 -c 'import torch, transformers; print(f"torch={torch.__version__}"); print(f"transformers={transformers.__version__}")'
-  nvidia-smi --query-gpu=index,name,memory.total,driver_version --format=csv,noheader
+  "$PYTHON_BIN" --version
+  "$PYTHON_BIN" -c 'import torch, transformers; print(f"torch={torch.__version__}"); print(f"transformers={transformers.__version__}")'
+  if command -v nvidia-smi >/dev/null 2>&1; then
+    nvidia-smi --query-gpu=index,name,memory.total,driver_version --format=csv,noheader
+  fi
 } | tee "$METADATA_FILE"
 
 cd "$REPO_ROOT"
-python3 train_clip.py "$RESOLVED_CONFIG" 2>&1 | tee "${RUN_DIR}/train.log"
+"$PYTHON_BIN" train_clip.py "$RESOLVED_CONFIG" 2>&1 | tee "${RUN_DIR}/train.log"

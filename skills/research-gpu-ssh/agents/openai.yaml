@@ -1,4 +1,4 @@
 interface:
   display_name: "Research GPU SSH"
-  short_description: "Safely run experiments on a shared GPU server"
-  default_prompt: "Use $research-gpu-ssh to inspect a shared GPU server and launch a reproducible experiment."
+  short_description: "Audit data and safely run shared-server experiments"
+  default_prompt: "Use $research-gpu-ssh to inspect shared resources, validate data and embeddings, launch a reproducible experiment, and collect compact results."

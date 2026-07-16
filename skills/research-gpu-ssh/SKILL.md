@@ -39,13 +39,20 @@ checkpoints, and logs on the server's designated data volume rather than the roo
 3. Download only the required dataset subset and cached features.
 4. Reuse a trusted, read-only shared public dataset cache only when permissions allow; link or copy it into the documented project layout without modifying the source.
 5. Validate sample counts, tensor shapes, feature dimensions, and ID alignment on CPU.
-6. Check GPU memory, utilization, and compute processes immediately before launch.
-7. Run a one-epoch smoke test before a formal experiment.
+6. Audit embedding health before training. For contrastive features, sample unrelated
+   image pairs and inspect cosine statistics; an unexpectedly near-one median can reveal
+   a collapsed or duplicated cache even when IDs and dimensions look correct.
+7. If a trusted cache exists, verify at least one row against a fresh canonical-model
+   extraction and record the model identifier, preprocessing, similarity, and file origin.
+8. Check GPU memory, utilization, and compute processes immediately before launch.
+9. Run a one-epoch smoke test before a formal experiment.
 
 ## Launch and monitor
 
 Pin the job to an idle GPU with `CUDA_VISIBLE_DEVICES`. Use `tmux` for long runs or
 `nohup` for short unattended runs, and always redirect output to a persistent log.
+If all shared GPUs are occupied, prefer a documented CPU FP32 run when the model is
+small enough; cap BLAS/OpenMP threads and concurrent workers to avoid oversubscription.
 
 Record:
 

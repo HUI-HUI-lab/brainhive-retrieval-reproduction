@@ -5,10 +5,18 @@
 > See [HowTo.md](HowTo.md) and the scripts under `reproduction/`. The reconstruction
 > and diffusion-prior stages are outside the reproduction scope.
 
-The completed 10-subject reproduction obtained 21.6%/53.1% Top-1/Top-5 for B32
-and 50.2%/82.6% for B32+VAE. The +28.6/+29.5 percentage-point improvement supports
-the paper's directional conclusion, although the absolute scores are lower. Compact
-results and run metadata are under [`report/data`](report/data/).
+The corrected 10-subject reproduction obtained **48.8%/81.0% Top-1/Top-5 for
+B32** and **69.7%/93.0% for B32+VAE**. The reproduced VAE gain
+(+20.9/+12.0 percentage points) closely follows the paper's detailed Table 7 gain
+(+22.5/+11.1 points). Compact results, cache-audit evidence, and run metadata are
+under [`report/data`](report/data/).
+
+> [!IMPORTANT]
+> The public Hugging Face B32 cache inspected on 16 July 2026 was severely
+> collapsed: random image pairs had median cosine similarity 0.9943. It produced
+> only 21.6%/53.1% mean retrieval. Do not use that B32 cache without running
+> `reproduction/scripts/validate_embeddings.py`. The corrected experiment used
+> canonical LAION B32 features verified against a fresh official-model extraction.
 
 BrainHIVE is a brain–vision decoding project for brain-to-image retrieval and reconstruction.
 
@@ -100,7 +108,19 @@ If you prefer to load from HuggingFace directly, set `MODEL_PATH` in `scripts/bu
 bash scripts/build_embeddings.sh
 ```
 
-We also provide cached visual embeddings on Hugging Face: https://huggingface.co/datasets/fakekungfu/Brain-HIVE_Visual_Embeddings
+The upstream project also provides cached visual embeddings on Hugging Face:
+https://huggingface.co/datasets/fakekungfu/Brain-HIVE_Visual_Embeddings
+
+For this reproduction, the public VAE shards passed the health check, but the B32
+shards did not. Regenerate B32 with `build_embeddings.py` and the canonical model
+`laion/CLIP-ViT-B-32-laion2B-s34B-b79K`, then validate it before training:
+
+```bash
+python reproduction/scripts/validate_embeddings.py --data-root /path/to/data
+python reproduction/scripts/validate_data.py \
+  --data-root /path/to/data --subjects 1 \
+  --models CLIP-ViT-B-32-laion2B-s34B-b79K vae
+```
 
 ## 3. Train brain↔vision contrastive model
 

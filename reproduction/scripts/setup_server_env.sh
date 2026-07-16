@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-ENV_PREFIX="${1:-/data0/yuhui/brainhive-retrieval/envs/brainhive-retrieval}"
+DEFAULT_ENV_PREFIX="/data0/${USER:-user}/brainhive-retrieval/envs/brainhive-retrieval"
+ENV_PREFIX="${1:-$DEFAULT_ENV_PREFIX}"
 PYTHON_VERSION="${PYTHON_VERSION:-3.12}"
 TORCH_INDEX_URL="${TORCH_INDEX_URL:-https://download.pytorch.org/whl/cu130}"
 TORCH_VERSION="${TORCH_VERSION:-2.9.1}"

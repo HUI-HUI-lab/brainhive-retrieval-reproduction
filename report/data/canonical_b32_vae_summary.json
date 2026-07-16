@@ -1,0 +1,16 @@
+{
+  "metrics": ["eval_top1_acc", "eval_top5_acc"],
+  "per_subject_mean": {
+    "1": {"eval_top1_acc": 0.62, "eval_top5_acc": 0.89},
+    "2": {"eval_top1_acc": 0.705, "eval_top5_acc": 0.93},
+    "3": {"eval_top1_acc": 0.685, "eval_top5_acc": 0.925},
+    "4": {"eval_top1_acc": 0.585, "eval_top5_acc": 0.89},
+    "5": {"eval_top1_acc": 0.605, "eval_top5_acc": 0.89},
+    "6": {"eval_top1_acc": 0.725, "eval_top5_acc": 0.94},
+    "7": {"eval_top1_acc": 0.685, "eval_top5_acc": 0.925},
+    "8": {"eval_top1_acc": 0.81, "eval_top5_acc": 0.97},
+    "9": {"eval_top1_acc": 0.72, "eval_top5_acc": 0.95},
+    "10": {"eval_top1_acc": 0.83, "eval_top5_acc": 0.985}
+  },
+  "overall_mean": {"eval_top1_acc": 0.697, "eval_top5_acc": 0.9295}
+}
